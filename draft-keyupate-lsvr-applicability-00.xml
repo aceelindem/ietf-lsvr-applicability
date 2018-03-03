@@ -15,6 +15,8 @@
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5580.xml">
 <!ENTITY RFC4957 SYSTEM
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4957.xml">
+<!ENTITY RFC7752 SYSTEM
+  "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7752.xml">
 <!ENTITY I-D.draft-keyupate-bgp-spf SYSTEM
   "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-keyupate-idr-bgp-spf-04.xml">
 ]>
@@ -78,8 +80,8 @@
       </t>
 
       <t>
-	After describing the deployment scenario, <xref target="requirements"/>
-	will describe the control plane routing protocols requirments for such deployments.
+	After describing the deployment scenario, <xref target="motivation"/>
+	will describe the reasons for BGP modifications for such deployments.
       </t>
       
       <t>
@@ -162,19 +164,24 @@
     </section>
 
 
-    <section anchor="requirements" title="Requirements of a DataCenter Routing Protocol">
+    <section anchor="motivation" title="Justification for BGP modifications">
       <t>
-	Following are general requirements for the Data Center routing protocols. Most datacenter
-	uses BGP as a routing protocol to create an overlay as well as an underlay network for their CLOS
-	Topologies. However, BGP is a path vector routing protool. Since it
-	does not have a way for creating a CLOS topology, it uses hop-by-hop EBGP peering to
-	facilitate hop-by-hop routing and for resolving any overlay nexthops. The hop-by-hop BGP peering imposes two
-	restrictions within a CLOS. It severly prohibits a deployment of Route Reflectors/Route
-	Controllers as the EBGP peerings are inlined to the datapath. The bestpath algorithm of BGP is 
-	prefix based and prevents announcements of prefixes unless the bestpath is executed for the prefix.
-	Both these restrictions has impact on overall convergence of the CLOS networks.
+	Many datacenter
+        use BGP as a routing protocol to create an overlay as well as an underlay network for their CLOS
+        Topologies to simplify layer 3 routing. However, BGP is a path vector routing protool. Since it
+        does not have a way for creating a topology, it uses hop-by-hop EBGP peering to
+        facilitate hop-by-hop routing for creating underlay netowkrs and for resolving any overlay nexthops. The hop-by-hop BGP peering imposes several
+        restrictions within a CLOS. It severly prohibits a deployment of Route Reflectors/Route
+        Controllers as the EBGP peerings are inlined to the datapath. The bestpath algorithm of BGP is
+	prefix based and it prevents announcements of prefixes to other BGP speakers unless the bestpath is executed for the prefix.
+        These restrictions has impact on overall convergence of the undelay networks within a CLOS.
       </t>
 
+      <t>
+        The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the NLRI format
+        of <xref target="RFC7752"/> allows SPF to be computed on BGP LSVR data easily as <xref target="RFC7752"/>
+        allows announcement of link and prefix information.
+      </t>
     </section>
 
     <section anchor="bgpspf" title="LSVR and its applicabity to CLOS">
@@ -227,6 +234,7 @@
       <?rfc include="reference.RFC.2328"?>
       <?rfc include="reference.RFC.5580"?>
       <?rfc include="reference.RFC.4957"?>
+      <?rfc include="reference.RFC.7752"?>
       &I-D.draft-keyupate-bgp-spf;
       <reference anchor="CLOS" target="">
         <front>
