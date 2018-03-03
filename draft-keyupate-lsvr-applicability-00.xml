@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!-- One method to get references from the online citation libraries.
-     There has to be one entity for each item to be referenced. 
+     There has to be one entity for each item to be referenced.
      An alternate method (rfc include) is described in the references. -->
 <!ENTITY RFC2119 SYSTEM
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
@@ -17,8 +17,10 @@
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4957.xml">
 <!ENTITY RFC7752 SYSTEM
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7752.xml">
-<!ENTITY I-D.draft-keyupate-bgp-spf SYSTEM
-  "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-keyupate-idr-bgp-spf-04.xml">
+<!ENTITY RFC7938 SYSTEM
+  "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7938.xml">
+<!ENTITY I-D.draft-keyupate-lsvr-bgp-spf SYSTEM
+  "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-keyupate-lsvr-bgp-spf-00.xml">
 ]>
 
 <?rfc comments="yes"?>
@@ -37,7 +39,7 @@
 
   <front>
 
-    <title abbrev="">Usage and Applicatbility of Link State Vector Routing in DataCenters  </title>
+    <title abbrev="">Usage and Applicatbility of Link State Vector Routing in Data Centers </title>
 
     <author fullname="XXX" initials="X"
             surname="XXX">
@@ -59,11 +61,11 @@
     <area>Routing</area>
 
     <workgroup>LSVR</workgroup>
-    
+
     <abstract>
       <t>
-	This document discusses the usage and applicability of Link State Vector Routing 
-	(LSVR) extensions in the CLOS architecture of DataCenter Networks. The document is
+	This document discusses the usage and applicability of Link State Vector Routing
+	(LSVR) extensions in the CLOS architecture of Data Center Networks. The document is
 	intended to provide a simplified guide for the deployment of LSVR extensions.
       </t>
     </abstract>
@@ -74,8 +76,8 @@
     <section anchor="intro" title="Introduction">
 
       <t>
-	This document complements [I-D.draft-keyupate-bgp-spf] by
-	discussing the applicability of the technology in a simple and fairly common 
+	This document complements <xref target="I-D.keyupate-lsvr-bgp-spf"/> by
+	discussing the applicability of the technology in a simple and fairly common
 	deployment scenario, which is described in <xref target="usecases"/>.
       </t>
 
@@ -83,11 +85,12 @@
 	After describing the deployment scenario, <xref target="motivation"/>
 	will describe the reasons for BGP modifications for such deployments.
       </t>
-      
+
       <t>
-	Once the control plane routing protocol requirements are described, the following
-	<xref target="bgpspf"/> will cover the protocol enhancements needed by LSVR
-	to BGP to meet these requirements and its applicability to the CLOS networks.
+	Once the control plane routing protocol requirements are described,
+	<xref target="bgpspf"/> will cover the LSVR protocol enhancements
+	to BGP to meet these requirements and their applicability to Data Center
+        CLOS networks.
       </t>
 
     </section>
@@ -108,9 +111,9 @@
 	This document assumes knowledge of existing data center networks and data center
 	network topologies <xref target="CLOS"/>. This document also assumes
 	knowledge of data center routing protocols like
-	BGP <xref target="RFC4271"/>, BGP-SPF [I-D.draft-keyupate-bgp-spf],
-	OSPF <xref target="RFC2328"/> and
-	data center layer 2 link layer protocols like LLDP <xref target="RFC4957"/>
+	BGP <xref target="RFC4271"/>, BGP-SPF <xref target="I-D.keyupate-lsvr-bgp-spf"/>.
+	OSPF <xref target="RFC2328"/>, as well as,
+	data center layer-2 link layer protocols like LLDP <xref target="RFC4957"/>
 	and BFD <xref target="RFC5580"/>.
       </t>
 
@@ -120,11 +123,11 @@
 
     <section anchor="usecases" title="Common Deployment Scenario">
       <t>
-	Within a DataCenter, a common network design to interconnect servers is done using the CLOS
+	Within a Data Center, a common network design to interconnect servers is done using the CLOS
 	topology <xref target="CLOS"/>. The CLOS topology is fully non blocking and the topology is
-	utilized using
-	Equal Cost Multipaths (ECMPs). In a CLOS topology, the minimum number of parallel paths
-	between two servers is determined by the width of a tier-1 stage as shown in the figure1. 
+	utilized using Equal Cost Multipaths (ECMPs). In a CLOS topology, the minimum number
+        of parallel paths between two servers is determined by the width of a tier-1 stage as shown in
+        the figure 1.
       </t>
 
       <t>
@@ -166,21 +169,26 @@
 
     <section anchor="motivation" title="Justification for BGP modifications">
       <t>
-	Many datacenter
+	Many data centers
         use BGP as a routing protocol to create an overlay as well as an underlay network for their CLOS
-        Topologies to simplify layer 3 routing. However, BGP is a path vector routing protool. Since it
+        Topologies to simplify layer 3 routing <xref target="RFC7938"/>.
+        However, BGP is a path vector routing protocol Since it
         does not have a way for creating a topology, it uses hop-by-hop EBGP peering to
-        facilitate hop-by-hop routing for creating underlay netowkrs and for resolving any overlay nexthops. The hop-by-hop BGP peering imposes several
+        facilitate hop-by-hop routing for the creating underlay network and for resolving any
+        overlay nexthops.
+        The hop-by-hop BGP peering imposes several
         restrictions within a CLOS. It severly prohibits a deployment of Route Reflectors/Route
-        Controllers as the EBGP peerings are inlined to the datapath. The bestpath algorithm of BGP is
-	prefix based and it prevents announcements of prefixes to other BGP speakers unless the bestpath is executed for the prefix.
-        These restrictions has impact on overall convergence of the undelay networks within a CLOS.
+        Controllers as the EBGP peerings are inline with the data path. The BGP best path algorithm is
+	prefix based and it prevents announcements of prefixes to other BGP speakers unless the best
+        path is executed for the prefix.
+        These restrictions significantly delay the overall convergence of the underlay
+        network within a CLOS.
       </t>
 
       <t>
         The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the NLRI format
         of <xref target="RFC7752"/> allows SPF to be computed on BGP LSVR data easily as <xref target="RFC7752"/>
-        allows announcement of link and prefix information.
+        facilicates announcement of node, link, and prefix information.
       </t>
     </section>
 
@@ -194,33 +202,34 @@
 
 
     <section anchor="IANA" title="IANA Considerations">
-      
+
       <t>
-	No updates to the registries are suggested by this document
+	No IANA updates are requested by this document.
       </t>
-      
+
     </section>
-    
+
     <section anchor="Security" title="Security Considerations">
       <t>
 	This document introduces no new security considerations above
-	and beyond those already specified in the <xref target="RFC4271"/>.
+	and beyond those already specified in the <xref target="RFC4271"/> and
+        <xref target="I-D.keyupate-lsvr-bgp-spf"/>.
       </t>
-      
+
     </section>
-    
+
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
       </t>
     </section>
-    
+
     <section anchor="log" title="Change Log">
       <t><list style="hanging">
           <t hangText="Initial Version:">March 1 2018</t>
       </list></t>
     </section>
   </middle>
-  
+
   <back>
 
     <references title="Normative References">
@@ -235,7 +244,8 @@
       <?rfc include="reference.RFC.5580"?>
       <?rfc include="reference.RFC.4957"?>
       <?rfc include="reference.RFC.7752"?>
-      &I-D.draft-keyupate-bgp-spf;
+      <?rfc include="reference.RFC.7938"?>
+      &I-D.draft-keyupate-lsvr-bgp-spf;
       <reference anchor="CLOS" target="">
         <front>
           <title>A Study of Non-Blocking Switching Networks</title>
