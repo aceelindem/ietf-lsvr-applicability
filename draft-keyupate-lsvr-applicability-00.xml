@@ -192,11 +192,36 @@
       </t>
     </section>
 
-    <section anchor="bgpspf" title="LSVR and its applicabity to CLOS">
+    <section anchor="bgpspf" title="LSVR Applicabity to CLOS Networks">
       <t>
-
+        With the BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/>, the BGP
+        best path computation and route computation are replaced with OSPF-like
+        algorithms <xref target="RFC2328"/> both to determine whether an BGP-LS NLRI
+        has changed and needs to be readvertised and to compute the routing domain.
+        These modifications will significantly improve convergence of the underlay
+        while affording the operational benefits of a single routing protocol
+        <xref target="RFC7938"/>.
       </t>
-
+      <t>
+        Since every router in the BGP SPF domain will have a complete
+        view of the topology, BGP sessions are not required on every link in the data center
+        fabric as with the hop-by-hop peering model described in <xref target="RFC7938"/>.
+        Rather, protocols such as BFD <xref target="RFC5580"/> can be used
+        to determine the availability links and switches in the data center fabric. Consequently,
+        the BGP session topology can be much more sparse than the data center fabric topology and
+        can utilize a BGP route reflector hierarchy with the desired level of redundancy.
+      </t>
+      <t>
+        Data center controllers typically require visibility to the BGP topology to compute
+        traffic-engineered paths. These controllers learn the topology and other relevant
+        information via a BGP-LS address family <xref target="RFC7752"/> which is totally
+        independent of the underlay address families (usually IPv4/IPv6 unicast). Furthermnore,
+        in traditional BGP underlays, all BGP routers will need to advertise their BGP-LS
+        information independently. With the BGP
+        SPF extensions, controllers can learn the topology using the same BGP advertisements
+        used to compute the underlay routes. Furthermore, these data center controllers can
+        avail the convergence advantages of the BGP SPF extensions.
+      </t>
     </section>
 
 
@@ -221,12 +246,6 @@
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
       </t>
-    </section>
-
-    <section anchor="log" title="Change Log">
-      <t><list style="hanging">
-          <t hangText="Initial Version:">March 1 2018</t>
-      </list></t>
     </section>
   </middle>
 
