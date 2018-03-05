@@ -19,6 +19,10 @@
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7752.xml">
 <!ENTITY RFC7938 SYSTEM
   "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7938.xml">
+<!ENTITY RFC5925 SYSTEM
+  "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5925.xml">
+<!ENTITY RFC7938 SYSTEM
+  "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4760.xml">
 <!ENTITY I-D.draft-keyupate-lsvr-bgp-spf SYSTEM
   "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-keyupate-lsvr-bgp-spf-00.xml">
 ]>
@@ -41,21 +45,35 @@
 
     <title abbrev="">Usage and Applicatbility of Link State Vector Routing in Data Centers </title>
 
-    <author fullname="XXX" initials="X"
-            surname="XXX">
-      <organization>XXX</organization>
+    <author fullname="Keyur Patel" initials="K"
+            surname="Patel">
+      <organization>Arrcus, Inc.</organization>
       <address>
         <postal>
-          <street>XXX</street>
-          <city>San Jose</city>
-          <country>CA</country>
-          <code></code>
+          <street>2077 Gateway Pl</street>
+          <city>San Jose, CA</city>
+          <country>USA</country>
+          <code>95110</code>
         </postal>
         <phone></phone>
-        <email>XXX@arrcus.com</email>
+        <email>keyur@arrcus.com</email>
       </address>
     </author>
 
+    <author fullname="Acee Lindem" initials="A"
+            surname="Lindem">
+      <organization>Cisco Systems</organization>
+      <address>
+        <postal>
+          <street>301 Midenhall Way</street>
+          <city>Cary, NC</city>
+          <country>USA</country>
+          <code>95110</code>
+        </postal>
+        <phone></phone>
+        <email>acee@cisco.com</email>
+      </address>
+    </author>
     <date month="March" year="2018" />
 
     <area>Routing</area>
@@ -220,8 +238,38 @@
         information independently. With the BGP
         SPF extensions, controllers can learn the topology using the same BGP advertisements
         used to compute the underlay routes. Furthermore, these data center controllers can
-        avail the convergence advantages of the BGP SPF extensions.
+        avail the convergence advantages of the BGP SPF extensions. The placement of controllers
+	could be outside of the forwarding path or within the forwarding path.
       </t>
+       <t>
+	Alternatively, as each and every router in the BGP SPF domain will have a complete view
+	view of the topology, the operator can also choose to configure BGP sessions in hop-by-hop
+	peering model described in <xref target="RFC7938"/> along with BFD <xref target="RFC5580"/>.
+	In both the deployment models BGP updates need not be serialized by BGP bestpath algorithm. This
+	helps overall network convergence.
+      </t>
+	    
+      <section anchor="lsvrsafi" title="Usage of LSVR SAFI">
+      <t>
+        BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/> defines a new BGP SAFI for
+	for announcement of BGP SPF routes. The NLRI format and its associated attributes follows
+	the format of BGP-LS for facilitate node, link and prefix annoucements. Whether the peering
+	model within a CLOS follows hop-by-hop peering described in <xref target="RFC7938"/> or any
+	controller based peering, an operator can exchange BGP SPF SAFI routes over the BGP peering
+	by simply configuring BGP SPF SAFI between the necessary BGP speakers.
+      </t>
+       <t>
+	BGP SPF SAFI can also co-exist with BGP IP Unicast SAFI which could exchange overlapping IP routes. 
+        The routes received by these SAFIs
+	are evaluated, stored and announced seperately according to the rules of <xref target="RFC4760"/>. The tie-breaking
+	of route installation is a matter of local policies and preference to the operator and their network.
+       </t>
+	      
+       <t>
+	Finally as the BGP SPF peering is done following the procedures described in <xref target="RFC4271"/>, all the
+	existing tranport security mechanisms including <xref target="RFC5925"/> are made available for BGP SPF SAFI.
+       </t>
+    </section>
     </section>
 
 
@@ -264,6 +312,8 @@
       <?rfc include="reference.RFC.4957"?>
       <?rfc include="reference.RFC.7752"?>
       <?rfc include="reference.RFC.7938"?>
+      <?rfc include="reference.RFC.5925"?>
+      <?rfc include="reference.RFC.4760"?>
       &I-D.draft-keyupate-lsvr-bgp-spf;
       <reference anchor="CLOS" target="">
         <front>
