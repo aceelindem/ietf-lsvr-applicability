@@ -74,6 +74,28 @@
         <email>acee@cisco.com</email>
       </address>
     </author>
+        <author fullname="Shawn Zandi" initials="S"
+            surname="Zandi">
+
+      <organization>Linkedin</organization>
+
+      <address>
+        <postal>
+          <street>222 2nd Street</street>
+
+          <city>San Francisco</city>
+
+          <region>CA</region>
+
+          <code>94105</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>szandi@linkedin.com</email>
+
+      </address>
+</author>
     <date month="March" year="2018" />
 
     <area>Routing</area>
@@ -245,7 +267,8 @@
 	Alternatively, as each and every router in the BGP SPF domain will have a complete view
 	view of the topology, the operator can also choose to configure BGP sessions in hop-by-hop
 	peering model described in <xref target="RFC7938"/> along with BFD <xref target="RFC5580"/>.
-	In both the deployment models BGP updates need not be serialized by BGP bestpath algorithm. This
+	In doing so, while the hop-by-hop peering model lacks inherent benifits of the controller based model, 
+	BGP updates need not be serialized by BGP bestpath algorithm in either of these models. This
 	helps overall network convergence.
       </t>
 	    
@@ -293,6 +316,7 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
+       The authors would like to thank Alvaro Retana, Gaurav Dawra and Yan Filyurin for the review and comments.
       </t>
     </section>
   </middle>
