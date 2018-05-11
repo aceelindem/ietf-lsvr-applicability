@@ -376,13 +376,13 @@
     </section>
     <section anchor="other-env" title="Non-CLOS/FAT Tree Topology Applicability">
     <t>
-    The BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/> can be used in other topolies and avail
+    The BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/> can be used in other topologies and avail
     the inherent convergence improvements. Additionally, sparse peerting techniques may be utilized 
     <xref target="peering"/>. However, determining whether or to establish a BGP session is more complex and 
     the heuristic described in <xref target="bi-connected"/> cannot be used. In such topologies, other
     techniques such as those described in <xref target="I-D.li-dynamic-flooding"/> may be employed. 
-    On potential deployment would be the underlay for an Service Provider (SP) backbone where usage of a 
-    single protocol is desired.
+    One potential deployment would be the underlay for a Service Provider (SP) backbone where usage of a 
+    single protocol, i.e., BGP, is desired.
     </t>
     </section>
     </section>
