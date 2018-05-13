@@ -43,7 +43,7 @@
 
   <front>
 
-    <title abbrev="">Usage and Applicatbility of Link State Vector Routing in Data Centers </title>
+    <title abbrev="">Usage and Applicability of Link State Vector Routing in Data Centers </title>
 
     <author fullname="Keyur Patel" initials="K"
             surname="Patel">
@@ -96,7 +96,29 @@
 
       </address>
 </author>
-    <date month="March" year="2018" />
+        <author fullname="Gaurav Dawra" initials="G"
+            surname="Dawra">
+
+      <organization>Linkedin</organization>
+
+      <address>
+        <postal>
+          <street>222 2nd Street</street>
+
+          <city>San Francisco</city>
+
+          <region>CA</region>
+
+          <code>94105</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>gdawra@linkedin.com</email>
+
+      </address>
+</author>
+    <date/>
 
     <area>Routing</area>
 
@@ -151,10 +173,10 @@
 	This document assumes knowledge of existing data center networks and data center
 	network topologies <xref target="CLOS"/>. This document also assumes
 	knowledge of data center routing protocols like
-	BGP <xref target="RFC4271"/>, BGP-SPF <xref target="I-D.keyupate-lsvr-bgp-spf"/>.
+	BGP <xref target="RFC4271"/>, BGP-SPF <xref target="I-D.keyupate-lsvr-bgp-spf"/>,
 	OSPF <xref target="RFC2328"/>, as well as,
-	data center layer-2 link layer protocols like LLDP <xref target="RFC4957"/>
-	and BFD <xref target="RFC5580"/>.
+	data center OAM protocols like LLDP <xref target="RFC4957"/> and
+        BFD <xref target="RFC5580"/>.
       </t>
 
 
@@ -164,8 +186,8 @@
     <section anchor="usecases" title="Common Deployment Scenario">
       <t>
 	Within a Data Center, a common network design to interconnect servers is done using the CLOS
-	topology <xref target="CLOS"/>. The CLOS topology is fully non blocking and the topology is
-	utilized using Equal Cost Multipaths (ECMPs). In a CLOS topology, the minimum number
+	topology <xref target="CLOS"/>. The CLOS topology is fully non-blocking and the topology is
+	realized using Equal Cost Multipath (ECMP). In a CLOS topology, the minimum number
         of parallel paths between two servers is determined by the width of a tier-1 stage as shown in
         the figure 1.
       </t>
@@ -211,33 +233,33 @@
       <t>
 	Many data centers
         use BGP as a routing protocol to create an overlay as well as an underlay network for their CLOS
-        Topologies to simplify layer 3 routing <xref target="RFC7938"/>.
-        However, BGP is a path vector routing protocol Since it
+        Topologies to simplify layer-3 routing and operations <xref target="RFC7938"/>.
+        However, BGP is a path-vector routing protocol. Since it
         does not have a way for creating a topology, it uses hop-by-hop EBGP peering to
-        facilitate hop-by-hop routing for the creating underlay network and for resolving any
-        overlay nexthops.
-        The hop-by-hop BGP peering imposes several
-        restrictions within a CLOS. It severly prohibits a deployment of Route Reflectors/Route
+        facilitate hop-by-hop routing for creating underlay network and for resolving any
+        overlay next hops.
+        The hop-by-hop BGP peering paradigm imposes several
+        restrictions within a CLOS. It severely prohibits a deployment of Route Reflectors/Route
         Controllers as the EBGP peerings are inline with the data path. The BGP best path algorithm is
-	prefix based and it prevents announcements of prefixes to other BGP speakers unless the best
-        path is executed for the prefix.
+	prefix based and it prevents announcements of prefixes to other BGP speakers until the best
+        path decision process is performed for the prefix at each hop.
         These restrictions significantly delay the overall convergence of the underlay
         network within a CLOS.
       </t>
 
       <t>
-        The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the NLRI format
-        of <xref target="RFC7752"/> allows SPF to be computed on BGP LSVR data easily as <xref target="RFC7752"/>
-        facilicates announcement of node, link, and prefix information.
+        The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the BGP-LS NLRI
+        format <xref target="RFC7752"/> allows the LSVR data to be advertised for nodes, links, and prefixes in the
+        BGP routing domain and used for SPF computations.
       </t>
     </section>
 
-    <section anchor="bgpspf" title="LSVR Applicabity to CLOS Networks">
+    <section anchor="bgpspf" title="LSVR Applicability to CLOS Networks">
       <t>
         With the BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/>, the BGP
         best path computation and route computation are replaced with OSPF-like
         algorithms <xref target="RFC2328"/> both to determine whether an BGP-LS NLRI
-        has changed and needs to be readvertised and to compute the routing domain.
+        has changed and needs to be re-advertised and to compute the routing table.
         These modifications will significantly improve convergence of the underlay
         while affording the operational benefits of a single routing protocol
         <xref target="RFC7938"/>.
@@ -247,50 +269,54 @@
         view of the topology, BGP sessions are not required on every link in the data center
         fabric as with the hop-by-hop peering model described in <xref target="RFC7938"/>.
         Rather, protocols such as BFD <xref target="RFC5580"/> can be used
-        to determine the availability links and switches in the data center fabric. Consequently,
-        the BGP session topology can be much more sparse than the data center fabric topology and
-        can utilize a BGP route reflector hierarchy with the desired level of redundancy.
+        to determine the availability links and switches as opposed to requiring a single-hop
+        BGP session on every link in the data centric fabric. 
+        Consequently,
+        the BGP session topology can be much sparser than the data center fabric topology 
+        itself and  can utilize a BGP route reflector hierarchy with the desired level
+        of redundancy.
       </t>
       <t>
         Data center controllers typically require visibility to the BGP topology to compute
         traffic-engineered paths. These controllers learn the topology and other relevant
-        information via a BGP-LS address family <xref target="RFC7752"/> which is totally
-        independent of the underlay address families (usually IPv4/IPv6 unicast). Furthermnore,
-        in traditional BGP underlays, all BGP routers will need to advertise their BGP-LS
+        information via the BGP-LS address family <xref target="RFC7752"/> which is totally
+        independent of the underlay address families (usually IPv4/IPv6 unicast). Furthermore,
+        in traditional BGP underlays, all the BGP routers will need to advertise their BGP-LS
         information independently. With the BGP
         SPF extensions, controllers can learn the topology using the same BGP advertisements
         used to compute the underlay routes. Furthermore, these data center controllers can
-        avail the convergence advantages of the BGP SPF extensions. The placement of controllers
-	could be outside of the forwarding path or within the forwarding path.
+        avail the convergence advantages of the BGP SPF extensions. The placement of
+        controllers can be outside of the forwarding path or within the forwarding path.
       </t>
        <t>
 	Alternatively, as each and every router in the BGP SPF domain will have a complete view
-	view of the topology, the operator can also choose to configure BGP sessions in hop-by-hop
+	of the topology, the operator can also choose to configure BGP sessions in hop-by-hop
 	peering model described in <xref target="RFC7938"/> along with BFD <xref target="RFC5580"/>.
-	In doing so, while the hop-by-hop peering model lacks inherent benifits of the controller based model, 
-	BGP updates need not be serialized by BGP bestpath algorithm in either of these models. This
-	helps overall network convergence.
+	In doing so, while the hop-by-hop peering model lacks inherent benefits of the
+        controller-based model, BGP updates need not be serialized by BGP best path algorithm in 
+        either of these models. This helps overall network convergence.
       </t>
 	    
       <section anchor="lsvrsafi" title="Usage of LSVR SAFI">
       <t>
-        BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/> defines a new BGP SAFI for
-	for announcement of BGP SPF routes. The NLRI format and its associated attributes follows
-	the format of BGP-LS for facilitate node, link and prefix annoucements. Whether the peering
+        The BGP SPF extensions <xref target="I-D.keyupate-lsvr-bgp-spf"/> define a new BGP-LS SAFI
+	for announcement of BGP SPF link-state. The NLRI format and its associated attributes follow
+	the format of BGP-LS for node, link, and prefix announcements. Whether the peering
 	model within a CLOS follows hop-by-hop peering described in <xref target="RFC7938"/> or any
-	controller based peering, an operator can exchange BGP SPF SAFI routes over the BGP peering
-	by simply configuring BGP SPF SAFI between the necessary BGP speakers.
+	controller-based or route-reflector peering, an operator can exchange BGP SPF SAFI routes over
+        the BGP peering	by simply configuring BGP SPF SAFI between the necessary BGP speakers.
       </t>
        <t>
-	BGP SPF SAFI can also co-exist with BGP IP Unicast SAFI which could exchange overlapping IP routes. 
+	The BGP-LS SPF SAFI can also co-exist with BGP IP Unicast SAFI which could exchange overlapping IP routes. 
         The routes received by these SAFIs
-	are evaluated, stored and announced seperately according to the rules of <xref target="RFC4760"/>. The tie-breaking
-	of route installation is a matter of local policies and preference to the operator and their network.
+	are evaluated, stored, and announced separately according to the rules of <xref target="RFC4760"/>. The
+        tie-breaking of route installation is a matter of the local policies and preferences of the network
+        operator.
        </t>
 	      
        <t>
-	Finally as the BGP SPF peering is done following the procedures described in <xref target="RFC4271"/>, all the
-	existing tranport security mechanisms including <xref target="RFC5925"/> are made available for BGP SPF SAFI.
+	Finally, as the BGP SPF peering is done following the procedures described in <xref target="RFC4271"/>, all the
+	existing transport security mechanisms including <xref target="RFC5925"/> are available for the BGP-LS SPF SAFI.
        </t>
     </section>
     </section>
@@ -316,7 +342,7 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-       The authors would like to thank Alvaro Retana, Gaurav Dawra and Yan Filyurin for the review and comments.
+       The authors would like to thank Alvaro Retana and Yan Filyurin for the review and comments.
       </t>
     </section>
   </middle>
