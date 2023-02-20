@@ -16,7 +16,7 @@
 <?rfc tocindent="yes"?>
 <?rfc tocompact="yes"?>
 <rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="info"
-     docName="draft-ietf-lsvr-applicability-08" ipr="trust200902" obsoletes="" updates=""
+     docName="draft-ietf-lsvr-applicability-09" ipr="trust200902" obsoletes="" updates=""
      submissionType="IETF" xml:lang="en" sortRefs="true" symRefs="true" tocInclude="true" tocDepth="5" version="3">
   <!-- xml2rfc v2v3 conversion 3.16.0 -->
   <front>
@@ -110,7 +110,7 @@
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
       NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
       "MAY", and "OPTIONAL" in this document are to be interpreted as
-      described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/> 
+      described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/>
       when, and only when, they appear in all capitals, as shown here.</t>
     </section>
     <section anchor="reco" numbered="true" toc="default">
@@ -197,7 +197,7 @@
         With the BGP SPF extensions <xref target="I-D.ietf-lsvr-bgp-spf" format="default"/>, the BGP
         best-path computation and route computation are replaced with OSPF-like
         algorithms <xref target="RFC2328" format="default"/> both to determine whether an BGP-LS SPF NLRI
-        has changed and needs to be re-advertised and to compute the BGP routes. 
+        has changed and needs to be re-advertised and to compute the BGP routes.
         These modifications will significantly improve convergence of the underlay
         while affording the operational benefits of a single routing protocol
         <xref target="RFC7938" format="default"/>.
@@ -220,7 +220,7 @@
 	peering model described in <xref target="RFC7938" format="default"/> along with BFD
         <xref target="RFC5580" format="default"/>.
 	In doing so, while the hop-by-hop peering model lacks the inherent benefits of the
-        controller-based model, BGP updates need not be serialized by BGP best-path algorithm in 
+        controller-based model, BGP updates need not be serialized by BGP best-path algorithm in
         either of these models. This helps overall network convergence.
       </t>
       <section anchor="lsvrsafi" numbered="true" toc="default">
@@ -234,7 +234,7 @@
           over the BGP peering by simply configuring BGP SPF SAFI between the necessary BGP speakers.
         </t>
         <t>
-	  The BGP-LS SPF SAFI can also co-exist with BGP IP Unicast SAFI which could exchange overlapping IP routes. 
+	  The BGP-LS SPF SAFI can also co-exist with BGP IP Unicast SAFI which could exchange overlapping IP routes.
           The routes received by these SAFIs
 	  are evaluated, stored, and announced independently according to the rules of <xref target="RFC4760"
           format="default"/>. The
@@ -248,23 +248,23 @@
         </t>
         <section anchor="other-safi" numbered="true" toc="default">
           <name>Relationship to Other BGP AFI/SAFI Tuples</name>
-          <t>Normally, the BGP-LS AFI/SAFI is used solely to compute the underlay and is given preference over other 
-          AFI/SAFIs. Other BGP SAFIs, e.g., IPv6/IPv6 Unicast VPN would use the BGP-SPF computed routes for next hop 
+          <t>Normally, the BGP-LS AFI/SAFI is used solely to compute the underlay and is given preference over other
+          AFI/SAFIs. Other BGP SAFIs, e.g., IPv6/IPv6 Unicast VPN would use the BGP-SPF computed routes for next hop
           resolution. However, if BGP-LS NLRI is also being advertised for controller consumption, there is no need
           to replicate the Node, Link, and Prefix NLRI in BGP-NLRI. Rather, additional NLRI attributes can be advertised
           in the BGP-LS SPF AFI/SAFI as required (e.g., BGP-LS TE metric extensions
           <xref target="RFC8571" format="default"/> and
-	  BGP-LS segment routing extensions <xref target="I-D.ietf-idr-bgp-ls-segment-routing-ext" format="default"/>). 
+	  BGP-LS segment routing extensions <xref target="RFC9085" format="default"/>).
           </t>
         </section>
       </section>
       <section anchor="peering" numbered="true" toc="default">
         <name>Peering Models</name>
         <t>
-          As previously stated, BGP SPF can be deployed using the existing peering model 
-          where there is a single-hop BGP session on each and every link in the data center 
+          As previously stated, BGP SPF can be deployed using the existing peering model
+          where there is a single-hop BGP session on each and every link in the data center
           fabric <xref target="RFC7938" format="default"/>. This provides for both the advertisement of routes
-          and the determination of link and neighboring switch availability. With BGP SPF, the underlay will converge 
+          and the determination of link and neighboring switch availability. With BGP SPF, the underlay will converge
           faster due to changes to the decision process that will allow NLRI changes to be advertised
           faster after detecting a change.
         </t>
@@ -273,20 +273,20 @@
           <t>
             Alternately, BFD <xref target="RFC5580" format="default"/> can be used to swiftly determine
             the availability of links and
-            the BGP peering model can be significantly sparser than the data center fabric. BGP SPF sessions only 
+            the BGP peering model can be significantly sparser than the data center fabric. BGP SPF sessions only
             need to be established with enough peers to provide a bi-connected graph. If IEBGP is used, then the
-            BGP routers at tier N-1 will act as route-reflectors for the routers at tier N. 
+            BGP routers at tier N-1 will act as route-reflectors for the routers at tier N.
           </t>
           <t>
-            The obvious usage of sparse peering is to avoid parallel BGP sessions on links between the same two 
+            The obvious usage of sparse peering is to avoid parallel BGP sessions on links between the same two
             switches in the data center fabric. However, this use case is not very useful since parallel
             layer-3 links between the same two BGP routers are rare in CLOS or Fat-Tree topologies. Additionally,
 	    when there are multiple links, they are often aggregated at the link layer rather than the IP layer.
-	    Two more interesting scenarios are described below. 
+	    Two more interesting scenarios are described below.
           </t>
           <t>
             In current data center topologies, there is often a very dense mesh of links between levels, e.g.,
-            leaf and spine, providing 32-way, 64-way, or more Equal-Cost Multi-Path (ECMP) paths. In 
+            leaf and spine, providing 32-way, 64-way, or more Equal-Cost Multi-Path (ECMP) paths. In
             these topologies, it is desirable not to have a BGP session on every link and techniques such as the one
             described in <xref target="bi-connected" format="default"/> can be used establish sessions on some
             subset of northbound
@@ -298,9 +298,9 @@
             Alternately, controller-based data center topologies are envisioned where BGP speakers within the data
             center only establish BGP sessions with two or more controllers. In these topologies, fabric nodes below the
             first tier (using <xref target="RFC7938" format="default"/> hierarchy) will establish BGP multi-hop
-            sessions with the 
+            sessions with the
             controllers. For the multi-hop sessions, determining the route to the controllers without depending on BGP
-            would need to be through some other means beyond the scope of this document. However, the BGP discovery 
+            would need to be through some other means beyond the scope of this document. However, the BGP discovery
             mechanisms described in <xref target="bgp-discovery" format="default"/> would be one possibility.
           </t>
         </section>
@@ -311,13 +311,13 @@
           Additionally, it assumed that the direction of the peering can be ascertained. In the context of a
           data center fabric, direction
           is either northbound (toward the spine), southbound (toward the Top-Of-Rack (TOR) switches) or east-west (same
-          level in hierarchy. The determination of the direction is beyond the scope of this document. However, it would 
-          be reasonable to assume a technique where the TOR switches can be identified and the number of hops to the TOR 
+          level in hierarchy. The determination of the direction is beyond the scope of this document. However, it would
+          be reasonable to assume a technique where the TOR switches can be identified and the number of hops to the TOR
           is used to determine the direction.</t>
           <t>In this heuristic, BGP speakers allow passive session establishment for southbound BGP sessions. For northbound
           sessions, BGP speakers will attempt to maintain two northbound BGP sessions with different switches (in data center
           fabrics there is normally a single layer-3 connection anyway). For east-west sessions, passive BGP session
-          establishment is allowed. However, BGP speaker will never actively establish an east-west BGP session unless 
+          establishment is allowed. However, BGP speaker will never actively establish an east-west BGP session unless
           it cannot establish two northbound BGP sessions.</t>
         </section>
       </section>
@@ -328,7 +328,7 @@
           level. For example, depending upon the topology, it may be possible to aggregate prefix advertisements using
           existing BGP policy. In Spine/Leaf topologies, it is not necessary to advertise BGP-LS NLRI received
           by leaves northbound to
-          the spine nodes at the level above. If a common AS is used for the spine nodes, this can easily 
+          the spine nodes at the level above. If a common AS is used for the spine nodes, this can easily
           be accomplished with EBGP and a simple policy to filter advertisements from the leaves
           to the spine if the first AS in the AS path is the spine AS.
         </t>
@@ -367,7 +367,7 @@
         <name>BGP Peer Discovery Requirements</name>
         <t>The most basic requirement is to be able to discover the address of a single-hop peer without
         pre-configuration. This is being accomplished today with using IPv6 Router Advertisements (RA)
-        <xref target="RFC4861" format="default"/> and assuming that a BGP sessions is desired with any discovered peer. 
+        <xref target="RFC4861" format="default"/> and assuming that a BGP sessions is desired with any discovered peer.
         Beyond the basic requirement, it is useful to have to
         following information relating to the BGP session:
         </t>
@@ -387,12 +387,12 @@
         for the ToR switches to be identified when installed and for the others switches in the fabric to determine their
         level based on the distance from the closest ToR switch.</t>
         <t>If there are multiple links between BGP speakers or the links between BGP speakers are unnumbered,
-        it is also useful to be able to establish multi-hop sessions using the loopback addresses. This will often 
-        require the discovery protocol to install route(s) toward the potential peer loopback addresses prior to 
+        it is also useful to be able to establish multi-hop sessions using the loopback addresses. This will often
+        require the discovery protocol to install route(s) toward the potential peer loopback addresses prior to
         BGP session establishment.</t>
         <t>
           Finally, a simple BGP discovery protocol could also be used to establish a multi-hop session with one or
-          more controllers by advertising connectivity to one or more controllers. However, once the multi-hop 
+          more controllers by advertising connectivity to one or more controllers. However, once the multi-hop
           session actually traverses multiple nodes, it is bordering a distance-vector routing protocol and
           possibly this is not a good requirement for the discovery protocol.
         </t>
@@ -405,10 +405,10 @@
             While BGP peer discovery is not part of
             <xref target="I-D.ietf-lsvr-bgp-spf" format="default"/>, there are, at least,
             three proposals for BGP peer discovery. At least one of these mechanisms will be adopted and will
-            be applicable to deployments other than the data center. It is strongly RECOMMENDED that the accepted 
-            mechanism be used in conjunction with BGP SPF in data centers. The BGP discovery mechanism should discovery 
-            both peer addresses and endpoints for BFD discovery. Additionally, it would be great if there were a 
-            heuristic for determining whether the peer is at a tier above or below the discovering BGP speaker (refer to 
+            be applicable to deployments other than the data center. It is strongly RECOMMENDED that the accepted
+            mechanism be used in conjunction with BGP SPF in data centers. The BGP discovery mechanism should discovery
+            both peer addresses and endpoints for BFD discovery. Additionally, it would be great if there were a
+            heuristic for determining whether the peer is at a tier above or below the discovering BGP speaker (refer to
             <xref target="bi-connected" format="default"/>).
           </t>
           <t>
@@ -449,7 +449,7 @@
           <name>Data Center Interconnect (DCI) Applicability</name>
           <t>
             Since BGP SPF is to be used for the routing underlay and DCI gateway boxes typically have direct
-            or very simple connectivity, BGP external sessions would typically not include the BGP SPF SAFI. 
+            or very simple connectivity, BGP external sessions would typically not include the BGP SPF SAFI.
           </t>
         </section>
       </section>
@@ -459,13 +459,13 @@
       <t>
         The BGP SPF extensions <xref target="I-D.ietf-lsvr-bgp-spf" format="default"/> can be used in other
         topologies and avail
-        the inherent convergence improvements. Additionally, sparse peering techniques may be utilized 
+        the inherent convergence improvements. Additionally, sparse peering techniques may be utilized
         <xref target="peering" format="default"/>. However, determining whether or to establish a BGP session
-        is more complex and 
+        is more complex and
         the heuristic described in <xref target="bi-connected" format="default"/> cannot be used. In such topologies,
         other techniques such as those described in <xref target="I-D.ietf-lsr-dynamic-flooding" format="default"/>
-        may be employed. 
-        One potential deployment would be the underlay for a Service Provider (SP) backbone where usage of a 
+        may be employed.
+        One potential deployment would be the underlay for a Service Provider (SP) backbone where usage of a
         single protocol, i.e., BGP, is desired.
       </t>
     </section>
@@ -485,15 +485,15 @@
       <t>
 	Existing BGP policy including aggregation and prefix filtering may be used in conjunction with
         the BGP-LS SPF SAFI. When aggregation policy is used, BGP-LS SPF prefix NLRI will be originated
-        for the aggregate prefix and BGP-LS SPF prefix NLRI for components will be filtered. Additionally, 
-        link and node NLRI may be filtered and the abstracted by the prefix NLRI. 
+        for the aggregate prefix and BGP-LS SPF prefix NLRI for components will be filtered. Additionally,
+        link and node NLRI may be filtered and the abstracted by the prefix NLRI.
       </t>
       <t>
         When BGP policy is used with the BGP-LS SPF SAFI, BGP speakers in the BGP-LS SPF routing
         domain will not all have the same set of NLRI and will compute a different BGP local routing
         table. Consequently, care must be taken to assure routing is consistent and blackholes or
         routing loops do not ensue. However, this is no different than if tradition BGP routing
-        using the IPv4 and IPv6 address families were used. 
+        using the IPv4 and IPv6 address families were used.
       </t>
     </section>
     <section anchor="IANA" numbered="true" toc="default">
@@ -541,111 +541,11 @@
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7938.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8177.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8571.xml"/>
+        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.9085.xml"/>
         <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.acee-idr-lldp-peer-discovery.xml"/>
-        <reference anchor="I-D.xu-idr-neighbor-autodiscovery" target="https://www.ietf.org/archive/id/draft-xu-idr-neighbor-autodiscovery-12.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-xu-idr-neighbor-autodiscovery-12.xml">
-          <front>
-            <title>BGP Neighbor Discovery</title>
-            <author fullname="Xiaohu Xu" initials="X." surname="Xu">
-              <organization>Alibaba Inc</organization>
-            </author>
-            <author fullname="Ketan Talaulikar" initials="K." surname="Talaulikar">
-              <organization>Cisco Systems</organization>
-            </author>
-            <author fullname="Kunyang Bi" initials="K." surname="Bi">
-              <organization>Huawei</organization>
-            </author>
-            <author fullname="Jeff Tantsura" initials="J." surname="Tantsura">
-              <organization>Apstra</organization>
-            </author>
-            <author fullname="Nikos Triantafillis" initials="N." surname="Triantafillis">
-              <organization>Amazon Web Services</organization>
-            </author>
-            <date day="26" month="November" year="2019"/>
-            <abstract>
-              <t>BGP is being used as the underlay routing protocol in some large- scaled data centers (DCs). Most popular design followed is to do hop-by-hop external BGP (EBGP) session configurations between neighboring routers on a per link basis. The provisioning of BGP neighbors in routers across such a DC brings its own operational complexity. This document introduces a BGP neighbor discovery mechanism that greatly simplifies BGP operations in such DC and other networks by automatic setup of BGP sessions between neighbor routers using this mechanism.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-xu-idr-neighbor-autodiscovery-12"/>
-        </reference>
-        <reference anchor="I-D.ietf-lsvr-l3dl" target="https://www.ietf.org/archive/id/draft-ietf-lsvr-l3dl-07.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-lsvr-l3dl-07.xml">
-          <front>
-            <title>Layer 3 Discovery and Liveness</title>
-            <author fullname="Randy Bush" initials="R." surname="Bush"/>
-            <author fullname="Rob Austein" initials="R." surname="Austein">
-              <organization>Arrcus</organization>
-            </author>
-            <author fullname="Keyur Patel" initials="K." surname="Patel">
-              <organization>Arrcus</organization>
-            </author>
-            <date day="26" month="January" year="2021"/>
-            <abstract>
-              <t>In Massive Data Centers, BGP-SPF and similar routing protocols are used to build topology and reachability databases. These protocols need to discover IP Layer 3 attributes of links, such as neighbor IP addressing, logical link IP encapsulation abilities, and link liveness. This Layer 3 Discovery and Liveness protocol collects these data, which may then be disseminated using BGP-SPF and similar protocols.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-ietf-lsvr-l3dl-07"/>
-        </reference>
-        <reference anchor="I-D.ietf-lsr-dynamic-flooding" target="https://www.ietf.org/archive/id/draft-ietf-lsr-dynamic-flooding-08.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-lsr-dynamic-flooding-08.xml">
-          <front>
-            <title>Dynamic Flooding on Dense Graphs</title>
-            <author fullname="Tony Li" initials="T." surname="Li">
-              <organization>Arista Networks</organization>
-            </author>
-            <author fullname="Peter Psenak" initials="P." surname="Psenak">
-              <organization>Cisco Systems, Inc.</organization>
-            </author>
-            <author fullname="Les Ginsberg" initials="L." surname="Ginsberg">
-              <organization>Cisco Systems, Inc.</organization>
-            </author>
-            <author fullname="Huaimo Chen" initials="H." surname="Chen">
-              <organization>Futurewei</organization>
-            </author>
-            <author fullname="Tony Przygienda" initials="T." surname="Przygienda">
-              <organization>Juniper Networks, Inc.</organization>
-            </author>
-            <author fullname="David Cooper" initials="D." surname="Cooper">
-              <organization>CenturyLink</organization>
-            </author>
-            <author fullname="Luay Jalil" initials="L." surname="Jalil">
-              <organization>Verizon</organization>
-            </author>
-            <author fullname="Srinath Dontula" initials="S." surname="Dontula">
-              <organization>ATT</organization>
-            </author>
-            <author fullname="Gyan Mishra" initials="G. S." surname="Mishra">
-              <organization>Verizon Inc.</organization>
-            </author>
-            <date day="14" month="December" year="2020"/>
-            <abstract>
-              <t>Routing with link state protocols in dense network topologies can result in sub-optimal convergence times due to the overhead associated with flooding. This can be addressed by decreasing the flooding topology so that it is less dense. This document discusses the problem in some depth and an architectural solution. Specific protocol changes for IS-IS, OSPFv2, and OSPFv3 are described in this document.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-ietf-lsr-dynamic-flooding-08"/>
-        </reference>
-        <reference anchor="I-D.ietf-idr-bgp-ls-segment-routing-ext" target="https://www.ietf.org/archive/id/draft-ietf-idr-bgp-ls-segment-routing-ext-16.txt" xml:base="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-idr-bgp-ls-segment-routing-ext-16.xml">
-          <front>
-            <title>BGP Link-State extensions for Segment Routing</title>
-            <author fullname="Stefano Previdi" initials="S." surname="Previdi">
-              <organization>Huawei Technologies</organization>
-            </author>
-            <author fullname="Ketan Talaulikar" initials="K." surname="Talaulikar">
-              <organization>Cisco Systems</organization>
-            </author>
-            <author fullname="Clarence Filsfils" initials="C." surname="Filsfils">
-              <organization>Cisco Systems</organization>
-            </author>
-            <author fullname="Hannes Gredler" initials="H." surname="Gredler">
-              <organization>RtBrick Inc.</organization>
-            </author>
-            <author fullname="Mach Chen" initials="M." surname="Chen">
-              <organization>Huawei Technologies</organization>
-            </author>
-            <date day="27" month="June" year="2019"/>
-            <abstract>
-              <t>Segment Routing (SR) allows for a flexible definition of end-to-end paths by encoding paths as sequences of topological sub-paths, called "segments". These segments are advertised by routing protocols e.g. by the link state routing protocols (IS-IS, OSPFv2 and OSPFv3) within IGP topologies. This document defines extensions to the BGP Link-state address-family in order to carry segment routing information via BGP.</t>
-            </abstract>
-          </front>
-          <seriesInfo name="Internet-Draft" value="draft-ietf-idr-bgp-ls-segment-routing-ext-16"/>
-        </reference>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.xu-idr-neighbor-autodiscovery.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-lsvr-l3dl.xml"/>
+        <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-lsr-dynamic-flooding.xml"/>
         <reference anchor="CLOS" target="">
           <front>
             <title>A Study of Non-Blocking Switching Networks</title>
@@ -654,7 +554,8 @@
             </author>
             <date month="March" year="1953"/>
           </front>
-          <seriesInfo name="" value="The Bell System Technical Journal, Vol. 32(2),        DOI 10.1002/j.1538-7305.1953.tb01433.x"/>
+          <seriesInfo name=""
+                      value="The Bell System Technical Journal, Vol. 32(2), DOI 10.1002/j.1538-7305.1953.tb01433.x"/>
         </reference>
       </references>
     </references>
