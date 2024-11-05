@@ -120,7 +120,7 @@
 	network topologies <xref target="CLOS" format="default"/>. This document also assumes
 	knowledge of data center routing protocols like
 	BGP <xref target="RFC4271" format="default"/>, BGP-SPF <xref target="I-D.ietf-lsvr-bgp-spf" format="default"/>,
-	OSPF <xref target="RFC2328" format="default"/>, as well as,
+	OSPF <xref target="RFC2328" format="default"/>, as well as
 	data center OAM protocols like LLDP <xref target="RFC4957" format="default"/> and
         BFD <xref target="RFC5580" format="default"/>.
       </t>
@@ -170,7 +170,7 @@
     <section anchor="motivation" numbered="true" toc="default">
       <name>Justification for BGP SPF Extension</name>
       <t>
-	In order to simplify layer-3 routing and operations <xref target="RFC7938" format="default"/>,
+	To simplify layer-3 routing and operations <xref target="RFC7938" format="default"/>,
         many data centers use BGP as a routing protocol to create both an underlay and overlay network
         for their CLOS Topologies.
         However, BGP is a path-vector routing protocol. Since it
@@ -186,7 +186,8 @@
         network within a CLOS network.
       </t>
       <t>
-        The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the BGP-LS NLRI
+        The LSVR SPF modifications allow BGP to overcome these limitations. Furthermore, using the BGP-LS Network
+        Layer Reachability Information (NLRI)
         format <xref target="RFC7752" format="default"/> allows the LSVR data to be advertised for nodes, links,
         and prefixes in the BGP routing domain and used for SPF computations.
       </t>
@@ -311,7 +312,7 @@
           Additionally, it assumed that the direction of the peering can be ascertained. In the context of a
           data center fabric, direction
           is either northbound (toward the spine), southbound (toward the Top-Of-Rack (TOR) switches) or east-west (same
-          level in hierarchy. The determination of the direction is beyond the scope of this document. However, it would
+          level in hierarchy). The determination of the direction is beyond the scope of this document. However, it would
           be reasonable to assume a technique where the TOR switches can be identified and the number of hops to the TOR
           is used to determine the direction.</t>
           <t>In this heuristic, BGP speakers allow passive session establishment for southbound BGP sessions. For northbound
@@ -325,7 +326,7 @@
         <name>BGP Spine/Leaf Topology Policy</name>
         <t>
           One of the advantages of using BGP SPF as the underlay protocol is that BGP policy can be applied at any
-          level. For example, depending upon the topology, it may be possible to aggregate prefix advertisements using
+          level. For example, depending on the topology, it may be possible to aggregate prefix advertisements using
           existing BGP policy. In Spine/Leaf topologies, it is not necessary to advertise BGP-LS NLRI received
           by leaves northbound to
           the spine nodes at the level above. If a common AS is used for the spine nodes, this can easily
@@ -393,7 +394,7 @@
         <t>
           Finally, a simple BGP discovery protocol could also be used to establish a multi-hop session with one or
           more controllers by advertising connectivity to one or more controllers. However, once the multi-hop
-          session actually traverses multiple nodes, it is bordering a distance-vector routing protocol and
+          session traverses multiple nodes, it is bordering a distance-vector routing protocol and
           possibly this is not a good requirement for the discovery protocol.
         </t>
       </section>
@@ -420,7 +421,7 @@
         </section>
         <section anchor="bgp-ipv6-peering" numbered="true" toc="default">
           <name>BGP IPv6 Simplified Peering</name>
-          <t>In order to conserve IPv4 address space and simplify operations, BGP-LS SPF routers in
+          <t>To conserve IPv4 address space and simplify operations, BGP-LS SPF routers in
           CLOS/Fat-Tree deployments can use IPv6 addresses as peer address. For IPv4 address families,
           IPv6 peering as specified in <xref target="RFC5549" format="default"/> can be deployed to avoid configuring
           IPv4 addresses on BGP-LS SPF router interfaces. When this is done, dynamic discovery
@@ -441,7 +442,7 @@
             visibility can then be used for troubleshooting and consistency checking. This would normally
             be done on a central
             controller or other management tool which could also be used for fabric data path verification.
-            The precise algorithms and heuristics, as well as, the complete set of management applications
+            The precise algorithms and heuristics, as well as the complete set of management applications
             is beyond the scope of this document.
           </t>
         </section>
@@ -460,7 +461,7 @@
         The BGP SPF extensions <xref target="I-D.ietf-lsvr-bgp-spf" format="default"/> can be used in other
         topologies and avail
         the inherent convergence improvements. Additionally, sparse peering techniques may be utilized
-        <xref target="peering" format="default"/>. However, determining whether or to establish a BGP session
+        <xref target="peering" format="default"/>. However, determining whether to establish a BGP session
         is more complex and
         the heuristic described in <xref target="bi-connected" format="default"/> cannot be used. In such topologies,
         other techniques such as those described in <xref target="I-D.ietf-lsr-dynamic-flooding" format="default"/>
@@ -513,8 +514,8 @@
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
       <t>
-	The authors would like to thank Alvaro Retana, Yan Filyurin, and Boris Hassanov
-	for their review and comments.
+	The authors would like to thank Alvaro Retana, Yan Filyurin, Boris Hassanov,
+        Stig Venaas, and Ron Bonica for their review and comments.
       </t>
     </section>
   </middle>
