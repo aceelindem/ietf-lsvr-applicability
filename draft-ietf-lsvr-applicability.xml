@@ -15,8 +15,8 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-ietf-lsvr-applicability-14"
-     ipr="trust200902">
+<rfc category="info" docName="draft-ietf-lsvr-applicability-14" ipr="trust200902"
+     submissionType="IETF" tocDepth="5" version="2">
   <front>
     <title abbrev="BGP SPF Applicability">Usage and Applicability of Link
     State Vector Routing in Data Centers</title>
@@ -121,7 +121,7 @@
       </address>
     </author>
 
-    <date day="5" month="November" year="2024"/>
+    <date/>
 
     <abstract>
       <t>This document discusses the usage and applicability of Link State
@@ -154,7 +154,7 @@
       This document also assumes knowledge of data center routing protocols
       like BGP <xref format="default" target="RFC4271"/>, BGP-SPF <xref
       format="default" target="I-D.ietf-lsvr-bgp-spf"/>, OSPF <xref
-      format="default" target="RFC2328"/>, as well as, data center OAM
+      format="default" target="RFC2328"/>, as well as data center OAM
       protocols like LLDP <xref format="default" target="RFC4957"/> and BFD
       <xref format="default" target="RFC5580"/>.</t>
     </section>
@@ -202,27 +202,30 @@
     </section>
 
     <section anchor="motivation" title="Justification for BGP SPF Extension">
-      <t>In order to simplify layer-3 routing and operations <xref
-      format="default" target="RFC7938"/>, many data centers use BGP as a
-      routing protocol to create both an underlay and an overlay network for
-      their Clos Topologies. However, BGP is a path-vector routing protocol.
-      Since it does not create a fabric topology, it uses hop-by-hop EBGP
-      peering to facilitate hop-by-hop routing to create the underlay network
-      and to resolve any overlay next hops. The hop-by-hop BGP peering
-      paradigm imposes several restrictions within a Clos. It severely
-      prohibits a deployment of Route Reflectors/Route Controllers as the EBGP
-      sessions are congruent with the data path. The BGP best-path algorithm
-      is prefix-based and it prevents announcements of prefixes to other BGP
-      speakers until the best-path decision process has been performed for the
-      prefix at each intermediate hop. These restrictions significantly delay
-      the overall convergence of the underlay network within a Clos
-      network.</t>
-
-      <t>The LSVR SPF modifications allow BGP to overcome these limitations.
-      Furthermore, using the BGP-LS NLRI format <xref format="default"
-      target="RFC9552"/> allows the LSVR data to be advertised for nodes,
-      links, and prefixes in the BGP routing domain and used for SPF
-      computations.</t>
+      <t>
+        To simplify layer-3 routing and operations <xref
+        format="default" target="RFC7938"/>, many data centers use BGP as a
+        routing protocol to create both an underlay and an overlay network for
+        their Clos Topologies. However, BGP is a path-vector routing protocol.
+        Since it does not create a fabric topology, it uses hop-by-hop EBGP
+        peering to facilitate hop-by-hop routing to create the underlay network
+        and to resolve any overlay next hops. The hop-by-hop BGP peering
+        paradigm imposes several restrictions within a Clos. It severely
+        prohibits a deployment of Route Reflectors/Route Controllers as the EBGP
+        sessions are congruent with the data path. The BGP best-path algorithm
+        is prefix-based and it prevents announcements of prefixes to other BGP
+        speakers until the best-path decision process has been performed for the
+        prefix at each intermediate hop. These restrictions significantly delay
+        the overall convergence of the underlay network within a Clos
+        network.
+      </t>
+      <t>
+        The LSVR SPF modifications allow BGP to overcome these limitations.
+        Furthermore, using the BGP-LS Network Layer Reachability Information
+        (NLRI) format <xref target="RFC9552"/> allows the LSVR data to be
+        advertised for nodes, links, and prefixes in the BGP routing domain and
+        used for SPF computations.
+      </t>
     </section>
 
     <section anchor="bgpspf" title="LSVR Applicability to Clos Networks">
@@ -350,7 +353,7 @@
           Additionally, it assumed that the direction of the peering can be
           ascertained. In the context of a data center fabric, direction is
           either northbound (toward the spine), southbound (toward the
-          Top-Of-Rack (TOR) switches) or east-west (same level in hierarchy.
+          Top-Of-Rack (TOR) switches) or east-west (same level in hierarchy).
           The determination of the direction is beyond the scope of this
           document. However, it would be reasonable to assume a technique
           where the TOR switches can be identified and the number of hops to
@@ -370,7 +373,7 @@
       <section anchor="bgp-policy" title="BGP Spine/Leaf Topology Policy">
         <t>One of the advantages of using BGP SPF as the underlay protocol is
         that BGP policy can be applied at any level. For example, depending
-        upon the topology, it may be possible to aggregate prefix
+        on the topology, it may be possible to aggregate prefix
         advertisements using existing BGP policy. In Spine/Leaf topologies, it
         is not necessary to advertise BGP-LS Prefix NLRI received by leaves
         northbound to the spine nodes. An aggregate route or a default route
@@ -453,26 +456,28 @@
         <t>Finally, a simple BGP discovery protocol could also be used to
         establish a multi-hop session with one or more controllers by
         advertising connectivity to one or more controllers. However, once the
-        multi-hop session actually traverses multiple nodes, it is bordering a
+        multi-hop session traverses multiple nodes, it is bordering a
         distance-vector routing protocol and possibly this is not a good
         requirement for the discovery protocol.</t>
       </section>
 
       <section anchor="bgp-discovery" title="BGP Peer Discovery">
         <section anchor="bgp-ipv6-peering" title="BGP IPv6 Simplified Peering">
-          <t>In order to conserve IPv4 address space and simplify operations,
-          BGP-LS SPF routers in Clos/Fat Tree deployments can use IPv6
-          addresses as peer address. For IPv4 address families, IPv6 peering
-          as specified in <xref format="default" target="RFC8950"/> can be
-          deployed to avoid configuring IPv4 addresses on BGP-LS SPF router
-          interfaces. When this is done, dynamic discovery mechanisms, as
-          described in <xref format="default" target="bgp-discovery"/>, can
-          used to learn the global or link-local IPv6 peer addresses and IPv4
-          addresses need not be configured on these interfaces. If IPv6
-          link-local peering is used, then configuration of IPv6 global
-          addresses is also not required and these IPv6 link-local addresses
-          must then be advertised in the BGP-LS Link Descriptor IPv6 Address
-          TLV (262) <xref format="default" target="RFC9552"/>.</t>
+          <t>
+            To conserve IPv4 address space and simplify operations, BGP-LS SPF
+            routers in Clos/Fat Tree deployments can use IPv6 addresses as peer
+            address.  For IPv4 address families, IPv6 peering as specified in
+            <xref format="default" target="RFC8950"/>  can be deployed to avoid
+            configuring IPv4 addresses on BGP- LS SPF router interfaces.
+            When this is done, dynamic discovery mechanisms, as
+            described in <xref format="default" target="bgp-discovery"/>, can
+            used to learn the global or link-local IPv6 peer addresses and IPv4
+            addresses need not be configured on these interfaces. If IPv6
+            link-local peering is used, then configuration of IPv6 global
+            addresses is also not required and these IPv6 link-local addresses
+            must then be advertised in the BGP-LS Link Descriptor IPv6 Address
+            TLV (262) <xref format="default" target="RFC9552"/>.
+          </t>
         </section>
 
         <section anchor="config-checking"
@@ -486,7 +491,7 @@
           troubleshooting and consistency checking. This would normally be
           done on a central controller or other management tool which could
           also be used for fabric data path verification. The precise
-          algorithms and heuristics, as well as, the complete set of
+          algorithms and heuristics, as well as the complete set of
           management applications is beyond the scope of this document.</t>
         </section>
 
@@ -506,11 +511,11 @@
       target="I-D.ietf-lsvr-bgp-spf"/> can be used in other topologies and
       avail the inherent convergence improvements. Additionally, sparse
       peering techniques may be utilized <xref format="default"
-      target="peering"/>. However, determining whether or to establish a BGP
+      target="peering"/>. However, determining whether to establish a BGP
       session is more complex and the heuristic described in <xref
       format="default" target="bi-connected"/> cannot be used. In such
       topologies, other techniques such as those described in <xref
-      format="default" target="I-D.ietf-lsr-dynamic-flooding"/> may be
+      format="default" target="RFC9667"/> may be
       employed. One potential deployment would be the underlay for a Service
       Provider (SP) backbone where usage of a single protocol, i.e., BGP, is
       desired.</t>
@@ -557,40 +562,42 @@
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t>The authors would like to thank Alvaro Retana, Yan Filyurin, and
-      Boris Hassanov for their review and comments.</t>
+      <t>
+        The authors would like to thank Alvaro Retana, Yan Filyurin, Boris
+        Hassanov, Stig Venaas, and Ron Bonica for their review and comments.
+      </t>
     </section>
   </middle>
 
   <back>
     <references title="Normative References">
-      <?rfc include='reference.I-D.ietf-lsvr-bgp-spf'?>
+      <?rfc include='reference.I-D.ietf-lsvr-bgp-spf.xml'?>
     </references>
 
     <references title="Informative References">
-      <?rfc include='reference.RFC.2328'?>
+      <?rfc include='reference.RFC.2328.xml'?>
 
-      <?rfc include='reference.RFC.4271'?>
+      <?rfc include='reference.RFC.4271.xml'?>
 
-      <?rfc include='reference.RFC.4760'?>
+      <?rfc include='reference.RFC.4760.xml'?>
 
-      <?rfc include='reference.RFC.4861'?>
+      <?rfc include='reference.RFC.4861.xml'?>
 
-      <?rfc include='reference.RFC.4957'?>
+      <?rfc include='reference.RFC.4957.xml'?>
 
-      <?rfc include='reference.RFC.5580'?>
+      <?rfc include='reference.RFC.5580.xml'?>
 
-      <?rfc include='reference.RFC.5925'?>
+      <?rfc include='reference.RFC.5925.xml'?>
 
-      <?rfc include='reference.RFC.7938'?>
+      <?rfc include='reference.RFC.7938.xml'?>
 
-      <?rfc include='reference.RFC.8177'?>
+      <?rfc include='reference.RFC.8177.xml'?>
 
-      <?rfc include='reference.RFC.8950'?>
+      <?rfc include='reference.RFC.8950.xml'?>
 
-      <?rfc include='reference.RFC.9552'?>
+      <?rfc include='reference.RFC.9552.xml'?>
 
-      <?rfc include='reference.I-D.ietf-lsr-dynamic-flooding'?>
+      <?rfc include='reference.RFC.9667.xml'?>
 
       <reference anchor="Clos" target="">
         <front>
