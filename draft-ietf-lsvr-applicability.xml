@@ -9,7 +9,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-ietf-lsvr-applicability-17"
+<rfc category="info" docName="draft-ietf-lsvr-applicability-18"
      ipr="trust200902" submissionType="IETF" tocDepth="5" version="2">
   <front>
     <title abbrev="BGP-SPF Applicability">Usage and Applicability of
@@ -501,13 +501,14 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
             SPF routers in Clos/Fat Tree deployments can use IPv6 addresses as
             peer address. For IPv4 address families, IPv6 peering as specified
             in <xref format="default" target="RFC8950"/> can be deployed to
-            avoid configuring IPv4 addresses on BGP- LS SPF router interfaces.
+            avoid configuring IPv4 addresses on BGP-LS SPF router interfaces.
             When this is done, dynamic discovery mechanisms, as described in
-            <xref format="default" target="bgp-discovery"/>, can used to learn
+            <xref format="default" target="bgp-discovery"/>, can be used to learn
             the global or link-local IPv6 peer addresses and IPv4 addresses need
             not be configured on these interfaces. If IPv6 link-local peering is
             used, then configuration of IPv6 global addresses is also not
-            required and these IPv6 link-local addresses must then be advertised
+            required <xref target="RFC7404"/> and these IPv6 link-local
+            addresses must then be advertised
             in the BGP-LS Link Descriptor IPv6 Address TLV (262)
             <xref format="default" target="RFC9552"/>.
           </t>
@@ -613,8 +614,8 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
         The authors would like to thank Alvaro Retana, Yan Filyurin, Boris
-        Hassanov, Stig Venaas, Ron Bonica, Mallory Knodel, and Dhruv Dhody
-        for their review and comments.
+        Hassanov, Stig Venaas, Ron Bonica, Mallory Knodel, Dhruv Dhody, and
+        Erik Kline for their review and comments.
       </t>
     </section>
   </middle>
@@ -633,6 +634,7 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
       <?rfc include='reference.RFC.4957.xml'?>
       <?rfc include='reference.RFC.5580.xml'?>
       <?rfc include='reference.RFC.5925.xml'?>
+      <?rfc include='reference.RFC.7404.xml'?>
       <?rfc include='reference.RFC.7938.xml'?>
       <?rfc include='reference.RFC.8177.xml'?>
       <?rfc include='reference.RFC.8950.xml'?>
