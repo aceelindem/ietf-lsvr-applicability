@@ -9,7 +9,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-ietf-lsvr-applicability-18"
+<rfc category="info" docName="draft-ietf-lsvr-applicability-19"
      ipr="trust200902" submissionType="IETF" tocDepth="5" version="2">
   <front>
     <title abbrev="BGP-SPF Applicability">Usage and Applicability of
@@ -149,27 +149,32 @@
 
           <artwork align="left" alt="" name="" type=""><![CDATA[
 
-                                    +-----+
-                                    |NODE |
-Tier 1                           +->| 12  |--+
-                                 |  +-----+  |
-                                 |           |
-                        +-----+  |  +-----+  |  +-----+
-          +------------>|NODE |--+->|NODE |--+--|NODE |-------------+
-          |       +-----|  9  |--+  | 10  |  +--| 11  |-----+       |
-          |       |     +-----+     +-----+     +-----+     |       |
-Tier 2    |       |                                         |       |
-          |       |     +-----+     +-----+     +-----+     |       |
-          | +-----+---->|NODE |--+  |NODE |  +--|NODE |-----+-----+ |
-          | |     | +---|  6  |--+->|  7  |--+--|  8  |---+ |     | |
-          | |     | |   +-----+  |  +-----+  |  +-----+   | |     | |
-          | |     | |            |           |            | |     | |
-        +-----+ +-----+          |  +-----+  |          +-----+ +-----+
-Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
-        |  1  | |  2  |             |  3  |             |  4  | |  5  |
-        +-----+ +-----+             +-----+             +-----+ +-----+
-          | |     | |                                     | |     | |
-          A B     B A            <- Servers ->            X Z     Z X
+                                  Tier 1
+                                  +-----+
+                                  |NODE |
+                               +->|  1  |--+
+                               |  +-----+  |
+                       Tier 2  |           |  Tier 2
+                      +-----+  |  +-----+  |  +-----+
+       +------------->|NODE |--+->|NODE |--+--|NODE |--------------+
+       |        +-----|  5  |--+  |  2  |  +--|  7  |-----+        |
+       |        |     +-----+     +-----+     +-----+     |        |
+       |        |                                         |        |
+       |        |     +-----+     +-----+     +-----+     |        |
+       | +------+---->|NODE |--+  |NODE |  +--|NODE |-----+------+ |
+       | |      | +---|  6  |--+->|  3  |--+--|  8  |---+ |      | |
+       | |      | |   +-----+  |  +-----+  |  +-----+   | |      | |
+       | |Tier 3| |            |           |            | |Tier 3| |
+     +-----+ +-----+           |  +-----+  |          +-----+ +-----+
+     |NODE | |NODE |           +->|NODE |--+          |NODE | |NODE |
+     |  9  | | 10  |              |  4  |             | 11  | | 12  |
+     +-----+ +-----+              +-----+             +-----+ +-----+
+      | | |   | | |                                    | | |    | | |
+      <- Servers ->                                    <- Servers ->
+
+      Tier 1 is comprised of Nodes 1, 2, 3, and 4
+      Tier 2 is comprised of Nodes 5, 6, 7, and 8
+      Tier 3 is comprised of Nodes 9, 10, 11, and 12
 
         ]]></artwork>
         </figure>
@@ -236,11 +241,11 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
       <t>
         Alternatively, as each and every router in the BGP-SPF domain will
         have a complete view of the topology, the operator can also choose to
-        configure BGP sessions in hop-by-hop peering model described in <xref
+        configure BGP sessions in the hop-by-hop peering model described in <xref
         format="default" target="RFC7938"/> along with BFD <xref
         format="default" target="RFC5580"/>. In doing so, while the hop-by-hop
         peering model lacks the inherent benefits of the controller-based model,
-        BGP updates need not be serialized by BGP best-path algorithm in either
+        BGP updates need not be serialized by the BGP best-path algorithm in either
         of these models. This helps overall network convergence.
       </t>
 
@@ -248,7 +253,7 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
         <t>
           Section 5.1 of <xref format="default"
           target="I-D.ietf-lsvr-bgp-spf"/> defines a new BGP-LS-SPF SAFI for
-          announcement of BGP-SPF link-state. The NLRI format and its associated
+          announcement of the BGP-SPF link-state. The NLRI format and its associated
           attributes follow the format of BGP-LS for node, link, and prefix
           announcements. Whether the peering model within a Clos follows
           hop-by-hop peering described in <xref format="default"
@@ -361,9 +366,9 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
             the link before the link can be used in the BGP SPF route
             calcuation.
             Additionally, it assumed that the direction of the peering can be
-            ascertained. In the context of a data center fabric, direction is
+            ascertained. In the context of a data center fabric, the direction is
             either northbound (toward the spine), southbound (toward the
-            Top-Of-Rack (ToR) switches) or east-west (same level in hierarchy).
+            Top-Of-Rack (ToR) switches) or east-west (same level in the hierarchy).
             The determination of the direction is beyond the scope of this
             document. However, it would be reasonable to assume a technique
             where the ToR switches can be identified and the number of hops to
@@ -375,7 +380,7 @@ Tier 3  |NODE | |NODE |          +->|NODE |--+          |NODE | |NODE |
             BGP speakers will attempt to maintain two northbound BGP sessions
             with different switches (in data center fabrics there is normally a
             single layer-3 connection anyway). For east-west sessions, passive
-            BGP session establishment is allowed. However, BGP speaker will
+            BGP session establishment is allowed. However, a BGP speaker will
             never actively establish an east-west BGP session unless it cannot
             establish two northbound BGP sessions.
           </t>
