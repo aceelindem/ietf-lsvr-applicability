@@ -9,7 +9,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-ietf-lsvr-applicability-19"
+<rfc category="info" docName="draft-ietf-lsvr-applicability-20"
      ipr="trust200902" submissionType="IETF" tocDepth="5" version="2">
   <front>
     <title abbrev="BGP-SPF Applicability">Usage and Applicability of
@@ -112,7 +112,8 @@
       </t>
 
       <t>
-        <xref format="default" target="bgpspf"/> covers the BGP-SPF protocol
+        <xref format="default" target="bgpspf"/> covers the BGP Link-State
+        Shortest Path First (IGP-SPF) protocol
         enhancements to BGP to meet these requirements and their applicability
         to data center <xref format="default" target="Clos"/> networks.
       </t>
@@ -125,7 +126,7 @@
         This document also assumes knowledge of data center routing protocols
         such as BGP <xref format="default" target="RFC4271"/>, BGP-SPF <xref
         format="default" target="I-D.ietf-lsvr-bgp-spf"/>, OSPF <xref
-        format="default" target="RFC2328"/>, as well as data center
+        format="default" target="RFC2328"/> <xref target="RFC5340"/>, as well as data center
         Operations, Administration, and Maintenance (OAM)
         protocols like Link Layer Discovery Protocol (LLDP)
         <xref format="default" target="RFC4957"/> and Bi-Directional Forwarding
@@ -197,8 +198,7 @@
         speakers until the best-path decision process has been performed for the
         prefix at each intermediate hop. These restrictions significantly delay
         the overall convergence of the underlay network within a Clos
-        network. Additional motivation for deploying BGP-SPF is included in
-        <xref target="I-D.ietf-lsvr-bgp-spf"/>.
+        network.
       </t>
 
       <t>
@@ -206,7 +206,11 @@
         Furthermore, using the BGP-LS Network Layer Reachability Information
         (NLRI) format allows the BGP-SPF data to be
         advertised for nodes, links, and prefixes in the BGP routing domain and
-        used for SPF computations <xref target="RFC9552"/>.
+        used for Short-Path-First (SPF) computations <xref target="RFC9552"/>.
+      </t>
+      <t>
+        Additional motivation for deploying BGP-SPF is included in
+        <xref target="I-D.ietf-lsvr-bgp-spf"/>.
       </t>
     </section>
 
@@ -324,7 +328,8 @@
             fabric. However, this use case is not very useful since parallel L3
             links between the same two BGP routers are rare in Clos or Fat-Tree
             topologies. Additionally, when there are multiple links, they are
-            often aggregated at the link layer rather than the IP layer. Two
+            often aggregated at the link layer using Link Aggregation Groups (LAGs)
+            <xref target="IEEE.802.1AX"/> rather than at the IP layer. Two
             more interesting scenarios are described below.
           </t>
 
@@ -619,8 +624,8 @@
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
         The authors would like to thank Alvaro Retana, Yan Filyurin, Boris
-        Hassanov, Stig Venaas, Ron Bonica, Mallory Knodel, Dhruv Dhody, and
-        Erik Kline for their review and comments.
+        Hassanov, Stig Venaas, Ron Bonica, Mallory Knodel, Dhruv Dhody,
+        Erik Kline, and Eric Vyncke for their review and comments.
       </t>
     </section>
   </middle>
@@ -637,6 +642,7 @@
       <?rfc include='reference.RFC.4760.xml'?>
       <?rfc include='reference.RFC.4861.xml'?>
       <?rfc include='reference.RFC.4957.xml'?>
+      <?rfc include='reference.RFC.5340.xml'?>
       <?rfc include='reference.RFC.5580.xml'?>
       <?rfc include='reference.RFC.5925.xml'?>
       <?rfc include='reference.RFC.7404.xml'?>
@@ -645,6 +651,16 @@
       <?rfc include='reference.RFC.8950.xml'?>
       <?rfc include='reference.RFC.9552.xml'?>
       <?rfc include='reference.RFC.9667.xml'?>
+      <reference anchor="IEEE.802.1AX" target="https://standards.ieee.org/standard/802_1AX-2020.html">
+        <front>
+          <title>IEEE Standard for Local and Metropolitan Area Networks: Link Aggregation</title>
+          <author>
+            <organization>IEEE</organization>
+          </author>
+          <date year="2020"/>
+        </front>
+        <seriesInfo name="IEEE Std" value="802.1AX-2020"/>
+      </reference>
       <reference anchor="Clos" target="">
         <front>
           <title>A Study of Non-Blocking Switching Networks</title>
