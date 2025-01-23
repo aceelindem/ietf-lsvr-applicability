@@ -9,7 +9,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="info" docName="draft-ietf-lsvr-applicability-21"
+<rfc category="info" docName="draft-ietf-lsvr-applicability-22"
      ipr="trust200902" submissionType="IETF" tocDepth="5" version="2">
   <front>
     <title abbrev="BGP-SPF Applicability">Usage and Applicability of BGP
@@ -384,7 +384,7 @@
         that BGP policy can be applied at any level. For example, depending on
         the topology, it may be possible to aggregate or filter prefix
         advertisements using existing BGP policy. In Spine/Leaf topologies, it
-        is not necessary to advertise BGP-LS Prefix NLRI received by leave
+        is not necessary to advertise BGP-LS Prefix NLRI received by leaf
         nodes from the spine back to other spine nodes. If a common AS is used
         for the spine nodes, this can easily be accomplished with EBGP and a
         simple policy to filter advertisements from the leaves to the spine if
@@ -564,7 +564,7 @@
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>The authors would like to thank Alvaro Retana, Yan Filyurin, Boris
       Hassanov, Stig Venaas, Ron Bonica, Mallory Knodel, Dhruv Dhody, Erik
-      Kline, and Eric Vyncke for their review and comments.</t>
+      Kline, Eric Vyncke, and John Scudder for their review and comments.</t>
     </section>
   </middle>
 
